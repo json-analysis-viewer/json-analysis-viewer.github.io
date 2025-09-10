@@ -1,17 +1,5 @@
 {
-  "invariants_revamp": [
-    "data/invariants_revamp/dummy.json"
-  ],
-  "invariants_rust": [
-    "data/invariants_rust/dummy.json",
-    "data/invariants_rust/dummy_copy.json"
-  ],
-  "passed_with_rri": [
-    "data/passed_with_rri/revampswesmith__datablockencoding.tf1l3qxt.json",
-    "data/passed_with_rri/revampswesmith__jmist.ozkry7yg.json",
-    "data/passed_with_rri/revampswesmith__junit.tnnvtml1.json",
-    "data/passed_with_rri/revampswesmith__requestadapter.r7k4rr2l.json"
-  ],
+  "passed_with_rri": [],
   "works_with_rri_in_prompt": [
     "data/works_with_rri_in_prompt/revampswesmith__datablockencoding.tf1l3qxt.json",
     "data/works_with_rri_in_prompt/revampswesmith__jmist.ozkry7yg.json",

@@ -1,14 +1,14 @@
 {
-  "works_with_rri_in_prompt": [
-    "data/works_with_rri_in_prompt/revampswesmith__datablockencoding.tf1l3qxt.json",
-    "data/works_with_rri_in_prompt/revampswesmith__jmist.ozkry7yg.json",
-    "data/works_with_rri_in_prompt/revampswesmith__junit.tnnvtml1.json",
-    "data/works_with_rri_in_prompt/revampswesmith__requestadapter.r7k4rr2l.json"
+  "REVAMP/works_with_rri_in_prompt": [
+    "data/REVAMP/works_with_rri_in_prompt/revampswesmith__datablockencoding.tf1l3qxt.json",
+    "data/REVAMP/works_with_rri_in_prompt/revampswesmith__jmist.ozkry7yg.json",
+    "data/REVAMP/works_with_rri_in_prompt/revampswesmith__junit.tnnvtml1.json",
+    "data/REVAMP/works_with_rri_in_prompt/revampswesmith__requestadapter.r7k4rr2l.json"
   ],
-  "works_without_rri_in_prompt": [
-    "data/works_without_rri_in_prompt/revampswesmith__fielddata.k1ig73vc.json",
-    "data/works_without_rri_in_prompt/revampswesmith__jmist.de2vc1ls.json",
-    "data/works_without_rri_in_prompt/revampswesmith__jmist.ot5g793p.json",
-    "data/works_without_rri_in_prompt/revampswesmith__jmist.yq7hhx89.json"
+  "REVAMP/works_without_rri_in_prompt": [
+    "data/REVAMP/works_without_rri_in_prompt/revampswesmith__fielddata.k1ig73vc.json",
+    "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.de2vc1ls.json",
+    "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.ot5g793p.json",
+    "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.yq7hhx89.json"
   ]
 }

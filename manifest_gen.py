@@ -1,6 +1,6 @@
 import os
 import json
-
+from pathlib import Path 
 def generate_manifest(root_dir="data", output_file="manifest.json"):
     """
     Scans a directory for subfolders and JSON files, creating a manifest.json.
@@ -21,13 +21,15 @@ def generate_manifest(root_dir="data", output_file="manifest.json"):
             continue
 
         # Get the current folder name
-        current_project = os.path.basename(dirpath)
-        
+        current_project = str(Path(dirpath).parent.name) + '/' + os.path.basename(dirpath)
+
         # Add JSON files from the current folder to the manifest
         json_files = sorted([f for f in filenames if f.endswith('.json')])
         if json_files:
             projects[current_project] = [os.path.join(dirpath, f).replace('\\', '/') for f in json_files]
-
+    for project in list(projects.keys()):
+        if not projects[project]:
+            del projects[project]
     # Write the manifest to a JSON file
     with open(output_file, 'w') as f:
         json.dump(projects, f, indent=2)

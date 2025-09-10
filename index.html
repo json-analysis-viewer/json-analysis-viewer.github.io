@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVAMP Repair Outputs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            padding: 0;
+            margin: 0;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen bg-gray-100 text-gray-800">
+
+    <!-- Sidebar for folder navigation -->
+    <aside id="sidebar" class="flex flex-col bg-gray-800 text-white w-64 md:w-80 p-6 transition-transform duration-300 ease-in-out transform -translate-x-full md:translate-x-0 fixed inset-y-0 left-0 z-50">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-2xl font-bold">Projects</h2>
+            <button id="sidebar-toggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav class="flex-1 overflow-y-auto">
+            <ul id="project-list" class="space-y-2">
+                <!-- Project folders will be dynamically added here -->
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main content area -->
+    <main class="flex-1 flex flex-col p-8 md:pl-80 transition-all duration-300 ease-in-out">
+        <!-- Sidebar toggle button for mobile -->
+        <button id="mobile-sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-lg shadow-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center md:text-left">REVAMP repair outputs</h1>
+
+        <!-- Container for the dynamically generated JSON data -->
+        <div id="json-container" class="flex-1 w-full bg-white rounded-xl shadow-lg p-6 border border-gray-200 overflow-y-auto">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Please select a folder from the side pane</h2>
+        </div>
+
+        <!-- Navigation controls -->
+        <div id="navigation-controls" class="flex items-center space-x-4 mt-6">
+            <button id="prev-btn" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                Previous
+            </button>
+            <button id="next-btn" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                Next
+            </button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const mobileSidebarToggle = document.getElementById('mobile-sidebar-toggle');
+            const projectList = document.getElementById('project-list');
+            const jsonContainer = document.getElementById('json-container');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            let projects = {}; // This will hold the fetched data
+            let currentProjectName = null;
+            let currentIndex = 0;
+
+            const fetchProjects = async () => {
+                try {
+                    const response = await fetch('./manifest.json');
+                    projects = await response.json();
+                    renderProjectList();
+                } catch (error) {
+                    console.error("Error fetching manifest file:", error);
+                    jsonContainer.innerHTML = '<h2 class="text-2xl font-semibold text-red-600 mb-4">Error: Could not load projects. Please ensure manifest.json exists.</h2>';
+                }
+            };
+            
+            // Function to display a single JSON object with headings for each key
+            const displaySingleJson = async (index) => {
+                jsonContainer.innerHTML = '';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+
+                if (!currentProjectName) {
+                    jsonContainer.innerHTML = '<h2 class="text-2xl font-semibold text-gray-700 mb-4">Please select a project from the sidebar.</h2>';
+                    return;
+                }
+                const currentProjectFiles = projects[currentProjectName];
+                if (!currentProjectFiles || currentProjectFiles.length === 0) {
+                    jsonContainer.innerHTML = '<h2 class="text-2xl font-semibold text-gray-700 mb-4">No files found for this project.</h2>';
+                    return;
+                }
+
+                const filePath = currentProjectFiles[index];
+
+                try {
+                    const fileResponse = await fetch(filePath);
+                    const item = await fileResponse.json();
+
+                    // Create a heading for the entire object
+                    const mainHeading = document.createElement('h2');
+                    mainHeading.textContent = `${currentProjectName} > ${filePath.split('/').pop()}`;
+                    mainHeading.classList.add('text-xl', 'font-semibold', 'text-gray-800', 'mb-4');
+                    jsonContainer.appendChild(mainHeading);
+
+                    // Iterate over the keys of the JSON object
+                    Object.keys(item).forEach(key => {
+                        // Create a details element for the collapsible section
+                        const details = document.createElement('details');
+                        details.classList.add('mt-4', 'mb-2', 'p-4', 'bg-gray-50', 'rounded-lg', 'border', 'border-gray-200');
+                        
+                        if (key === 'name') {
+                            details.setAttribute('open', '');
+                        }
+                        
+                        // Create a summary element for the heading
+                        const summary = document.createElement('summary');
+                        summary.classList.add('text-lg', 'font-medium', 'text-blue-600', 'cursor-pointer');
+                        summary.textContent = key;
+
+                        // Create a <pre> tag for the content
+                        const pre = document.createElement('code');
+                        pre.innerText = item[key]
+                        pre.classList.add('text-gray-700', 'text-sm', 'overflow-auto', 'mt-2', 'max-h-[70vh]','font-mono', 'whitespace-pre-wrap','break-words');
+
+                        // Append the elements to the details
+                        details.appendChild(summary);
+                        details.appendChild(pre);
+                        
+                        // Append the details to the container
+                        jsonContainer.appendChild(details);
+                    });
+                    
+                    currentIndex = index;
+                    updateButtonStates();
+                } catch (error) {
+                    console.error(`Error fetching file: ${filePath}`, error);
+                    jsonContainer.innerHTML = `<h2 class="text-2xl font-semibold text-red-600 mb-4">Error loading file: ${filePath.split('/').pop()}</h2>`;
+                }
+            };
+            
+            // Function to enable/disable buttons based on current index
+            const updateButtonStates = () => {
+                if (currentProjectName) {
+                    const currentProjectFiles = projects[currentProjectName];
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex === currentProjectFiles.length - 1;
+                } else {
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = true;
+                }
+            };
+
+            // Event listeners for the "Previous" and "Next" buttons
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    displaySingleJson(currentIndex - 1);
+                }
+            });
+            nextBtn.addEventListener('click', () => {
+                if (currentProjectName && currentIndex < projects[currentProjectName].length - 1) {
+                    displaySingleJson(currentIndex + 1);
+                }
+            });
+
+            // Function to render the project list in the sidebar
+            const renderProjectList = () => {
+                projectList.innerHTML = '';
+                Object.keys(projects).forEach(projectName => {
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    button.textContent = projectName;
+                    button.classList.add('w-full', 'p-2', 'text-left', 'rounded-md', 'hover:bg-gray-700', 'transition-colors', 'duration-150');
+                    button.dataset.project = projectName;
+                    
+                    button.addEventListener('click', async (e) => {
+                        const newProject = e.target.dataset.project;
+                        if (newProject !== currentProjectName) {
+                            currentProjectName = newProject;
+                            currentIndex = 0; // Reset index when a new project is selected
+                            displaySingleJson(currentIndex);
+                        }
+                    });
+
+                    li.appendChild(button);
+                    projectList.appendChild(li);
+                });
+            };
+
+            // Sidebar toggle logic for mobile
+            const toggleSidebar = () => {
+                sidebar.classList.toggle('-translate-x-full');
+            };
+
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            mobileSidebarToggle.addEventListener('click', toggleSidebar);
+
+            // Initial load of the project list
+            fetchProjects();
+        });
+    </script>
+</body>
+</html>

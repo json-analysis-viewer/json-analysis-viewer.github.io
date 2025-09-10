@@ -24,13 +24,15 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
                 j_object['without_rri'] = new_impl_without_rri
                 j_object['rri'] = rri_benchmark.rri
                 j_object['comments'] = ''
+                reasoning_path = Path(with_rri_benchmark.benchmark_path) / 'reasoning.txt'
+                j_object['reasoning with rri'] = reasoning_path.read_text() if reasoning_path.exists() else ''
 
                 output_file = output_path / f"{project_name}.json"
                 if output_file.exists():
-                    with open(output_file, "r") as f:
+                    with open(output_file, "r", encoding='utf-8') as f:
                         existing_data = json.load(f)
                     j_object['comments'] = existing_data.get('comments', '')
-                with open(output_file, "w") as f:
+                with open(output_file, "w", encoding='utf-8') as f:
                     json.dump(j_object, f, indent=4)
                 print(f"Written comparison for project {project_name} to {output_file}")
 
@@ -41,6 +43,6 @@ if __name__ == "__main__":
     with_rri_path = path / 'with_rri'
     without_rri_path = path / 'without_rri'
     rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
-    output_path = Path('/nas/json_viewer_website/data/fails_with_rri_but_works_without_rri')
+    output_path = Path('/nas/json_viewer_website/data/works_with_rri_in_prompt')
     output_path.mkdir(parents=True, exist_ok=True)
     generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)

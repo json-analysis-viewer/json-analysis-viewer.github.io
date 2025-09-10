@@ -26,7 +26,8 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
                 j_object['comments'] = ''
                 reasoning_path = Path(with_rri_benchmark.benchmark_path) / 'reasoning.txt'
                 j_object['reasoning with rri'] = reasoning_path.read_text() if reasoning_path.exists() else ''
-
+                reasoning_path = Path(without_rri_benchmark.benchmark_path) / 'reasoning.txt'
+                j_object['reasoning without rri'] = reasoning_path.read_text() if reasoning_path.exists() else ''
                 output_file = output_path / f"{project_name}.json"
                 if output_file.exists():
                     with open(output_file, "r", encoding='utf-8') as f:
@@ -39,10 +40,10 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
 
                 
 if __name__ == "__main__":
-    path = Path('/nas/long_context_reasoning/revamp/results3/repair_ablations/o4-mini/analysis/with_rri_but_not_without')
+    path = Path('/nas/long_context_reasoning/revamp/results3/repair_ablations/o4-mini/analysis/without_rri_but_not_with')
     with_rri_path = path / 'with_rri'
     without_rri_path = path / 'without_rri'
     rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
-    output_path = Path('/nas/json_viewer_website/data/works_with_rri_in_prompt')
+    output_path = Path('/nas/json_viewer_website/data/works_without_rri_in_prompt')
     output_path.mkdir(parents=True, exist_ok=True)
     generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)

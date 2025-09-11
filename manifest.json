@@ -10,5 +10,19 @@
     "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.de2vc1ls.json",
     "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.ot5g793p.json",
     "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.yq7hhx89.json"
+  ],
+  "CRUST-bench/pre_post_conditions": [
+    "data/CRUST-bench/pre_post_conditions/Holdem_Odds.json",
+    "data/CRUST-bench/pre_post_conditions/cissy.json",
+    "data/CRUST-bench/pre_post_conditions/clhash.json",
+    "data/CRUST-bench/pre_post_conditions/csyncmers.json",
+    "data/CRUST-bench/pre_post_conditions/dict.json"
+  ],
+  "CRUST-bench/model_checker_like": [
+    "data/CRUST-bench/model_checker_like/Holdem_Odds.json",
+    "data/CRUST-bench/model_checker_like/cissy.json",
+    "data/CRUST-bench/model_checker_like/clhash.json",
+    "data/CRUST-bench/model_checker_like/csyncmers.json",
+    "data/CRUST-bench/model_checker_like/dict.json"
   ]
 }

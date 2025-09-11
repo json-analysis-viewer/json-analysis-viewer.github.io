@@ -1,12 +1,52 @@
 from pathlib import Path 
 import json
 import sys 
-sys.path.append('/nas/long_context_reasoning/revamp/src/reasoning')
-from benchmark import load_benchmark
+
+def load_crust_bench_benchmarks(r_path: Path):
+    sys.path.append('/nas/CRUST-bench-repair/src')
+    from benchmark import Benchmark
+    C_BENCH = Path("/nas/CRUST-bench-repair/datasets/CBench")
+    benchmarks = []
+    for project in r_path.iterdir():
+        if project.is_dir() and Path(project / "Cargo.toml").exists():
+            project_name = project.name
+            if Path(C_BENCH / project_name).exists():
+                benchmarks.append(Benchmark(C_BENCH / project_name, project))
+            else:
+                c_proj = project_name
+                if "proj_" in c_proj:
+                    c_proj = c_proj.replace("proj_", "")
+                    assert c_proj != ""
+                if Path(C_BENCH / c_proj).exists():
+
+                    benchmarks.append(Benchmark(C_BENCH / c_proj, project))
+                else:
+                    c_proj = c_proj.replace("_", "-")
+                    benchmarks.append(Benchmark(C_BENCH / c_proj, project))
+    return benchmarks
+
+def generate_data_crust_bench(r_path, rri_type, rri_prompt_path, output_path): 
+    benchmarks = load_crust_bench_benchmarks(r_path)
+    for benchmark in benchmarks:
+        j_object = {}
+        j_object['name'] = benchmark.project_name
+        j_object[rri_type] = ''
+        rri_path = benchmark.rust_path / 'metadata' / 'invariants' / (rri_type+'.txt')
+        with open(rri_path, "r", encoding='utf-8') as f:
+            j_object[rri_type] = f.read()
+        j_object['rri_prompt'] = ''
+        rri_prompt_file = rri_prompt_path / (benchmark.project_name + '.prompt')
+        with open(rri_prompt_file, "r", encoding='utf-8') as f:
+            j_object['rri_prompt'] = f.read()
+        output_file = output_path / f"{benchmark.project_name}.json"
+        with open(output_file, "w", encoding='utf-8') as f:
+            json.dump(j_object, f, indent=4)
+        
 
 
 def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path):
-    
+    sys.path.append('/nas/long_context_reasoning/revamp/src/reasoning')
+    from benchmark import load_benchmark as load_revamp_benchmark
     for path in with_rri_path.iterdir():
         j_object = {}
         if path.is_dir():
@@ -14,9 +54,9 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
             without_rri_project_path = without_rri_path / project_name
             rri_project_path = rri_path / project_name
             if without_rri_project_path.exists() and without_rri_project_path.is_dir():
-                with_rri_benchmark = load_benchmark(str(path), Path('./'))
-                without_rri_benchmark = load_benchmark(str(without_rri_project_path), Path('./'))
-                rri_benchmark = load_benchmark(str(rri_project_path), Path('./'))
+                with_rri_benchmark = load_revamp_benchmark(str(path), Path('./'))
+                without_rri_benchmark = load_revamp_benchmark(str(without_rri_project_path), Path('./'))
+                rri_benchmark = load_revamp_benchmark(str(rri_project_path), Path('./'))
                 j_object['name'] = project_name
                 new_impl_with_rri = Path(with_rri_benchmark.new_adt_files[0]).read_text()
                 new_impl_without_rri = Path(without_rri_benchmark.new_adt_files[0]).read_text()
@@ -40,10 +80,12 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
 
                 
 if __name__ == "__main__":
-    path = Path('/nas/long_context_reasoning/revamp/results3/repair_ablations/o4-mini/analysis/without_rri_but_not_with')
-    with_rri_path = path / 'with_rri'
-    without_rri_path = path / 'without_rri'
-    rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
-    output_path = Path('/nas/json_viewer_website/data/works_without_rri_in_prompt')
+    path = Path('/nas/CRUST-bench/results/claude4/rri_expts/manually_most_relevant_inv')
+    # with_rri_path = path / 'with_rri'
+    # without_rri_path = path / 'without_rri'
+    # rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
+    output_path = Path('/nas/json_viewer_website/data/CRUST-bench/model_checker_like')
     output_path.mkdir(parents=True, exist_ok=True)
-    generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)
+    generate_data_crust_bench(path, 'manual_invs', Path('/nas/CRUST-bench-repair/src/inv_expts/prompts_handcrafted'), output_path)
+    
+    # generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)

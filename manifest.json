@@ -11,26 +11,26 @@
     "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.ot5g793p.json",
     "data/REVAMP/works_without_rri_in_prompt/revampswesmith__jmist.yq7hhx89.json"
   ],
-  "CRUST-bench/pre_post_conditions_c_source": [
-    "data/CRUST-bench/pre_post_conditions_c_source/aes128_SIMD.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/amp.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/approxidate.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/avalanche.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/bhshell.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/bigint.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/bitset.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/blt.json",
-    "data/CRUST-bench/pre_post_conditions_c_source/bostree.json"
+  "CRUST-bench_pre_post/c_source_with_interfaces": [
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/aes128_SIMD.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/amp.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/approxidate.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/avalanche.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/bhshell.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/bigint.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/bitset.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/blt.json",
+    "data/CRUST-bench_pre_post/c_source_with_interfaces/bostree.json"
   ],
-  "CRUST-bench/pre_post_conditions_c_source_with_interfaces": [
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/aes128_SIMD.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/amp.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/approxidate.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/avalanche.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bhshell.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bigint.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bitset.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/blt.json",
-    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bostree.json"
+  "CRUST-bench_pre_post/c_source": [
+    "data/CRUST-bench_pre_post/c_source/aes128_SIMD.json",
+    "data/CRUST-bench_pre_post/c_source/amp.json",
+    "data/CRUST-bench_pre_post/c_source/approxidate.json",
+    "data/CRUST-bench_pre_post/c_source/avalanche.json",
+    "data/CRUST-bench_pre_post/c_source/bhshell.json",
+    "data/CRUST-bench_pre_post/c_source/bigint.json",
+    "data/CRUST-bench_pre_post/c_source/bitset.json",
+    "data/CRUST-bench_pre_post/c_source/blt.json",
+    "data/CRUST-bench_pre_post/c_source/bostree.json"
   ]
 }

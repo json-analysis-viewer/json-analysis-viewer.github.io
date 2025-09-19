@@ -26,16 +26,23 @@ def load_crust_bench_benchmarks(r_path: Path):
     return benchmarks
 
 def generate_data_crust_bench(r_path, rri_type, rri_prompt_path, output_path): 
+    
     benchmarks = load_crust_bench_benchmarks(r_path)
     for benchmark in benchmarks:
         j_object = {}
         j_object['name'] = benchmark.project_name
+        for file in benchmark.c_files:
+            
+            j_object[file['file_name']] = file['content']
         j_object[rri_type] = ''
         rri_path = benchmark.rust_path / 'metadata' / 'invariants' / (rri_type+'.txt')
         with open(rri_path, "r", encoding='utf-8') as f:
-            j_object[rri_type] = f.read()
+            j_object[rri_type+"_pre_post_conditions"] = f.read()
         j_object['rri_prompt'] = ''
-        rri_prompt_file = rri_prompt_path / (benchmark.project_name + '.prompt')
+        if rri_prompt_path == '':
+            rri_prompt_file = benchmark.rust_path / 'metadata' / 'invariants' / (rri_type+'_prompt.txt')
+        else:
+            rri_prompt_file = rri_prompt_path / (benchmark.project_name + '.prompt')
         with open(rri_prompt_file, "r", encoding='utf-8') as f:
             j_object['rri_prompt'] = f.read()
         output_file = output_path / f"{benchmark.project_name}.json"
@@ -80,12 +87,12 @@ def generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_pat
 
                 
 if __name__ == "__main__":
-    path = Path('/nas/CRUST-bench/results/claude4/rri_expts/manually_most_relevant_inv')
+    path = Path('/nas/CRUST-bench-repair/datasets/inv_rust_path')
     # with_rri_path = path / 'with_rri'
     # without_rri_path = path / 'without_rri'
     # rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
-    output_path = Path('/nas/json_viewer_website/data/CRUST-bench/model_checker_like')
+    output_path = Path('/nas/json_viewer_website/data/CRUST-bench/pre_post_conditions_c_source')
     output_path.mkdir(parents=True, exist_ok=True)
-    generate_data_crust_bench(path, 'manual_invs', Path('/nas/CRUST-bench-repair/src/inv_expts/prompts_handcrafted'), output_path)
+    generate_data_crust_bench(path, 'c', '', output_path)
     
     # generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)

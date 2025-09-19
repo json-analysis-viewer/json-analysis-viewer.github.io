@@ -91,8 +91,8 @@ if __name__ == "__main__":
     # with_rri_path = path / 'with_rri'
     # without_rri_path = path / 'without_rri'
     # rri_path = Path('/nas/long_context_reasoning/revamp/revamp_scaled_gpt5_improved_all')
-    output_path = Path('/nas/json_viewer_website/data/CRUST-bench/pre_post_conditions_c_source')
+    output_path = Path('/nas/json_viewer_website/data/CRUST-bench/pre_post_conditions_c_source_with_interfaces')
     output_path.mkdir(parents=True, exist_ok=True)
-    generate_data_crust_bench(path, 'c', '', output_path)
+    generate_data_crust_bench(path, 'c_rust', '', output_path)
     
     # generate_data_compare_repair_revamp(with_rri_path, without_rri_path, rri_path, output_path)

@@ -21,5 +21,16 @@
     "data/CRUST-bench/pre_post_conditions_c_source/bitset.json",
     "data/CRUST-bench/pre_post_conditions_c_source/blt.json",
     "data/CRUST-bench/pre_post_conditions_c_source/bostree.json"
+  ],
+  "CRUST-bench/pre_post_conditions_c_source_with_interfaces": [
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/aes128_SIMD.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/amp.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/approxidate.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/avalanche.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bhshell.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bigint.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bitset.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/blt.json",
+    "data/CRUST-bench/pre_post_conditions_c_source_with_interfaces/bostree.json"
   ]
 }
